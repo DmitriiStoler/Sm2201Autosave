@@ -1,22 +1,28 @@
-#include "propertyReader.h"
+#include "propertyManager.h"
 #include "strBaseUtils.h"
 #include <fstream>
 #include <iostream>
 
 const static std::string emptyProperty = "";
 
-MossbauerLab::Utils::Config::PropertyReader::PropertyReader(const std::string &fileName)
+MossbauerLab::Utils::Config::PropertyManager::PropertyManager(const std::string &fileName)
     :_fileName(fileName)
 {
     reload();
 }
 
-bool MossbauerLab::Utils::Config::PropertyReader::containsKey(const std::string &key) const
+/* MossbauerLab::Utils::Config::PropertyManager::PropertyManager(const std::string &fileName2)
+    :_fileName(fileName2)
+{
+    save();
+} */
+
+bool MossbauerLab::Utils::Config::PropertyManager::containsKey(const std::string &key) const
 {
     return _properties.find(key) != _properties.end();
 }
 
-const std::string& MossbauerLab::Utils::Config::PropertyReader::get(const std::string &key) const
+const std::string& MossbauerLab::Utils::Config::PropertyManager::get(const std::string &key) const
 {
     if (!containsKey(key))
         return emptyProperty;
@@ -24,7 +30,7 @@ const std::string& MossbauerLab::Utils::Config::PropertyReader::get(const std::s
     return it->second;
 }
 
-void MossbauerLab::Utils::Config::PropertyReader::reload()
+void MossbauerLab::Utils::Config::PropertyManager::reload()
 {
     _properties.erase(_properties.begin(), _properties.end());
     std::ifstream propertyFileReader;
@@ -47,4 +53,22 @@ void MossbauerLab::Utils::Config::PropertyReader::reload()
         }
     }
     propertyFileReader.close();
+}
+
+void MossbauerLab::Utils::Config::PropertyManager::save(bool Channel1, bool Channel2, long Channel1Period, long Channel2Period)
+{
+std::fstream fout("autosave.txt", std::ios::out | std::ios::trunc); // File name?
+ 
+    if (!fout.is_open()) 
+    {
+          using namespace std; 
+          ofstream outfile("autosave.txt");
+    }
+    
+        fout << "useChannel1 "<< Channel1 << std::endl;   
+        fout << "useChannel2 "<< Channel2 << std::endl;
+        fout << "Chanel1Period "<< Channel1Period << std::endl;
+        fout << "Chanel1Period "<< Channel2Period << std::endl;
+        fout.close(); // программа больше не использует файл, поэтому его нужно закрыть
+    
 }
