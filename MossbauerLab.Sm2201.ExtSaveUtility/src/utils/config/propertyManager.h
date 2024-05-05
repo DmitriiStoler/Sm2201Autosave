@@ -15,14 +15,15 @@ namespace MossbauerLab
     {
         namespace Config
         {
-            class PropertyReader
+            class PropertyManager
             {
             public:
-                PropertyReader(const std::string& fileName);
+                PropertyManager(const std::string& fileName);
                 bool containsKey(const std::string& key) const;
                 const std::string& get(const std::string& key) const;
                 void reload();
-            private:
+                void save(bool Channel1, bool Channel2, long Channel1Period, long Channel2Period);
+                private:
                 std::string _fileName;
                 std::map<std::string, std::string> _properties;
             };

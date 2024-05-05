@@ -124,13 +124,12 @@ DWORD WINAPI TimerThreadFunc (LPVOID lpParam)
 
                         channellElapsedTime = 0;
                     }
-                    else
-                    {
-                        Sleep(CHECK_INTERVAL);
-                        channellElapsedTime += CHECK_INTERVAL;
-                        elapsedTime += CHECK_INTERVAL;
-                    }
+                    
                 }
+                 else
+                    {
+                        channellElapsedTime += CHECK_INTERVAL;
+                    }
                 
                 if (config->isChannelTwoUsing())
                 {
@@ -193,14 +192,16 @@ DWORD WINAPI TimerThreadFunc (LPVOID lpParam)
                         }
 
                         channel2ElapsedTime = 0;
-                    }
-                    else
+                       }
+                        else
                     {
-                        Sleep(CHECK_INTERVAL);
                         channel2ElapsedTime += CHECK_INTERVAL;
-                        elapsedTime += CHECK_INTERVAL;
+                        
                     }
+                    Sleep(CHECK_INTERVAL);
+                    elapsedTime += CHECK_INTERVAL;
                 }
+               
                 stats.channel1TimeLeft = config->isChannelOneUsing() 
                                        ? config->getChannelOnePeriod() - channellElapsedTime / 1000
                                        : 0;
